@@ -19,7 +19,7 @@ O **CineFlix** é um aplicativo de filmes inspirado visualmente em plataformas d
 O projeto teve início no MIT App Inventor e, posteriormente, foi recriado no Android Studio para permitir a implementação de recursos mais avançados, como:
 
 - Pesquisa de filmes pela internet;
-- Catálogo local em JSON;
+- Catalogo local em JSON;
 - Banco de dados SQLite;
 - Histórico de pesquisas;
 - Preferências do usuário;
