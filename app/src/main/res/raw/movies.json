@@ -1,0 +1,57 @@
+[
+  {"id": 1, "titulo": "Nexus Zero", "generos": "Ficção Científica", "ano": 2023, "nota": 8.4,
+   "sinopse": "Em um futuro onde as mentes humanas podem ser conectadas em rede, um engenheiro descobre uma falha capaz de apagar identidades inteiras.",
+   "posterUrl": "https://picsum.photos/seed/nexuszero/400/600", "recomendados": [8, 13]},
+
+  {"id": 2, "titulo": "Sombra Eterna", "generos": "Terror", "ano": 2022, "nota": 7.2,
+   "sinopse": "Uma família se muda para uma casa isolada e logo percebe que algo antigo já morava lá antes deles.",
+   "posterUrl": "https://picsum.photos/seed/sombraeterna/400/600", "recomendados": [11]},
+
+  {"id": 3, "titulo": "Corações em Fúria", "generos": "Romance", "ano": 2021, "nota": 7.8,
+   "sinopse": "Dois rivais profissionais são forçados a trabalhar juntos e descobrem que a linha entre ódio e paixão é mais fina do que imaginavam.",
+   "posterUrl": "https://picsum.photos/seed/coracoesemfuria/400/600", "recomendados": [9]},
+
+  {"id": 4, "titulo": "O Último Vôo", "generos": "Ação", "ano": 2024, "nota": 8.1,
+   "sinopse": "Um piloto aposentado precisa voltar aos céus para impedir um sequestro que pode mudar o destino de duas nações.",
+   "posterUrl": "https://picsum.photos/seed/ultimovoo/400/600", "recomendados": [10]},
+
+  {"id": 5, "titulo": "Risadas da Meia-Noite", "generos": "Comédia", "ano": 2020, "nota": 6.9,
+   "sinopse": "Um grupo de amigos decide gravar um podcast de comédia às escondidas, mas as gravações viram um sucesso viral inesperado.",
+   "posterUrl": "https://picsum.photos/seed/risadasdameianoite/400/600", "recomendados": [12]},
+
+  {"id": 6, "titulo": "Labirinto Mental", "generos": "Suspense", "ano": 2023, "nota": 8.6,
+   "sinopse": "Uma psicóloga investiga um paciente cujas memórias parecem pertencer a várias pessoas diferentes ao mesmo tempo.",
+   "posterUrl": "https://picsum.photos/seed/labirintomental/400/600", "recomendados": [2, 11]},
+
+  {"id": 7, "titulo": "Reino Perdido", "generos": "Aventura", "ano": 2019, "nota": 7.5,
+   "sinopse": "Uma exploradora parte em busca de uma civilização perdida escondida sob as geleiras do Ártico.",
+   "posterUrl": "https://picsum.photos/seed/reinoperdido/400/600", "recomendados": [14]},
+
+  {"id": 8, "titulo": "Código Fantasma", "generos": "Ficção Científica", "ano": 2022, "nota": 8.0,
+   "sinopse": "Uma hacker descobre uma inteligência artificial que se esconde dentro da infraestrutura global da internet.",
+   "posterUrl": "https://picsum.photos/seed/codigofantasma/400/600", "recomendados": [1, 13]},
+
+  {"id": 9, "titulo": "Amor em Paris", "generos": "Romance", "ano": 2018, "nota": 7.0,
+   "sinopse": "Uma chef brasileira se muda para Paris e encontra no caos da cidade luz o amor que não esperava.",
+   "posterUrl": "https://picsum.photos/seed/amoremparis/400/600", "recomendados": [3]},
+
+  {"id": 10, "titulo": "A Caçada Final", "generos": "Ação", "ano": 2021, "nota": 7.9,
+   "sinopse": "Um ex-agente é convocado para uma última missão que colocará em risco tudo que ele construiu.",
+   "posterUrl": "https://picsum.photos/seed/acacadafinal/400/600", "recomendados": [4]},
+
+  {"id": 11, "titulo": "Vozes do Além", "generos": "Terror", "ano": 2020, "nota": 6.8,
+   "sinopse": "Uma médium recebe mensagens de um lugar que ela jura nunca ter visitado, e a fronteira entre os mundos começa a se romper.",
+   "posterUrl": "https://picsum.photos/seed/vozesdoalem/400/600", "recomendados": [2, 6]},
+
+  {"id": 12, "titulo": "Piadas Sem Fim", "generos": "Comédia", "ano": 2023, "nota": 7.1,
+   "sinopse": "Um comediante fracassado aceita um emprego bizarro como palhaço de festas infantis para pagar as contas.",
+   "posterUrl": "https://picsum.photos/seed/piadassemfim/400/600", "recomendados": [5]},
+
+  {"id": 13, "titulo": "Fronteiras do Tempo", "generos": "Ficção Científica", "ano": 2024, "nota": 8.8,
+   "sinopse": "Uma cientista cria um dispositivo capaz de enviar mensagens para o passado, e cada mudança gera consequências imprevisíveis.",
+   "posterUrl": "https://picsum.photos/seed/fronteirasdotempo/400/600", "recomendados": [1, 8]},
+
+  {"id": 14, "titulo": "Ilha Selvagem", "generos": "Aventura", "ano": 2022, "nota": 7.4,
+   "sinopse": "Sobreviventes de um naufrágio precisam se unir para enfrentar os perigos de uma ilha que parece viva.",
+   "posterUrl": "https://picsum.photos/seed/ilhaselvagem/400/600", "recomendados": [7]}
+]

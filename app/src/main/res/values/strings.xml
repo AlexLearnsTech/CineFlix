@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">CineFlix</string>
+    <string name="sem_historico">Nenhuma pesquisa realizada ainda</string>
+    <string name="historico_pesquisas">Histórico de pesquisas</string>
+    <string name="ok">OK</string>
+    <string name="historico_limpo">Histórico limpo com sucesso</string>
+    <string name="versao_app">CineFlix • Versão %1$s</string>
+
+    <string name="nenhum_favorito_exportar">Adicione favoritos antes de exportar</string>
+    <string name="exportado_com_sucesso">Exportado para: %1$s</string>
+    <string name="erro_exportar">Erro ao exportar arquivo</string>
+
+    <string name="adicionar_favoritos">Adicionar aos favoritos</string>
+    <string name="remover_favoritos">Remover dos favoritos</string>
+
+    <string name="info_detalhes">%1$s • %2$s • ⭐ %3$s</string>
+
+    <string name="configuracoes">Configurações</string>
+    <string name="tema_escuro">Tema escuro</string>
+    <string name="ordenar_favoritos_por">Ordenar favoritos por</string>
+
+    <string name="nome">Nome</string>
+    <string name="ano">Ano</string>
+    <string name="nota">Nota</string>
+
+    <string name="ver_historico">Ver histórico</string>
+    <string name="limpar_historico">Limpar histórico</string>
+
+    <string name="poster_filme">Pôster do filme</string>
+    <string name="recomendados">Recomendados</string>
+
+    <string name="favoritos">Favoritos</string>
+    <string name="nenhum_favorito">Nenhum filme foi adicionado aos favoritos</string>
+
+    <string name="exportar_lista">Exportar lista de favoritos</string>
+    <string name="buscar_filme">Buscar filme por título ou gênero</string>
+    <string name="nenhum_filme_encontrado">Nenhum filme encontrado</string>
+
+    <string name="buscando_filmes">Buscando filmes...</string>
+    <string name="erro_busca_tmdb">Não foi possível consultar o TMDB. Verifique sua conexão e tente novamente.</string>
+    <string name="api_tmdb_nao_configurada">A chave da API TMDB não foi configurada.</string>
+    <string name="toque_lupa_buscar">Toque na lupa para pesquisar</string>
+
+</resources>
