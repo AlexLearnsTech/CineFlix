@@ -363,6 +363,16 @@ class MainActivity : AppCompatActivity() {
                 true
             }
 
+            R.id.action_cinemas -> {
+                startActivity(
+                    Intent(
+                        this,
+                        CinemasActivity::class.java
+                    )
+                )
+                true
+            }
+
             R.id.action_config -> {
                 startActivity(
                     Intent(

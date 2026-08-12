@@ -17,7 +17,10 @@ val tmdbApiKey = localProperties.getProperty(
     "TMDB_API_KEY",
     ""
 )
-
+val mapsApiKey = localProperties.getProperty(
+    "MAPS_API_KEY",
+    ""
+)
 android {
     namespace = "com.example.cineflix"
     compileSdk {
@@ -42,7 +45,9 @@ android {
             "TMDB_API_KEY",
             "\"$tmdbApiKey\""
         )
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
+        testInstrumentationRunner =
+            "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -72,5 +77,9 @@ dependencies {
         implementation("androidx.recyclerview:recyclerview:1.3.2")
         implementation("androidx.cardview:cardview:1.0.0")
         implementation("io.coil-kt:coil:2.6.0")
+        // Google Maps
+        implementation("com.google.android.gms:play-services-maps:20.0.0")
 
+        // Localização do dispositivo
+        implementation("com.google.android.gms:play-services-location:21.4.0")
 }
