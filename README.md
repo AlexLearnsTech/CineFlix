@@ -1,817 +1,480 @@
 # CineFlix
 
-O CineFlix é um aplicativo Android desenvolvido em Kotlin no Android Studio como parte das atividades práticas da disciplina de desenvolvimento de aplicativos.
+O CineFlix é um aplicativo Android desenvolvido como projeto acadêmico da disciplina de desenvolvimento de aplicativos móveis. O projeto foi construído de forma incremental ao longo dos módulos da disciplina, começando com uma proposta simples de pesquisa de filmes e evoluindo até incorporar persistência de dados, banco SQLite, comunicação por SMS e e-mail, WebView, serviços web, mapas e geolocalização.
 
-O projeto começou inicialmente no MIT App Inventor e depois foi recriado no Android Studio para permitir a implementação de recursos mais completos. Durante os módulos foram adicionadas funcionalidades de pesquisa de filmes, persistência de dados, banco SQLite, comunicação com APIs, mapas e geolocalização.
+O aplicativo começou como um protótipo no MIT App Inventor e, posteriormente, foi recriado no Android Studio utilizando Kotlin e XML. Essa mudança permitiu organizar melhor o código e aplicar de forma mais completa os recursos estudados durante o curso.
 
 ## Autor
 
 Alex Magalhães Santos
 
----
+## Visão geral do projeto
 
-## Sobre o projeto
+A proposta do CineFlix é reunir em um único aplicativo recursos úteis para quem deseja pesquisar e organizar informações sobre filmes. O usuário pode buscar títulos, consultar detalhes, salvar favoritos, explorar uma galeria, compartilhar recomendações por SMS ou e-mail e localizar cinemas próximos utilizando mapas e localização do dispositivo.
 
-A proposta do CineFlix é criar um aplicativo de filmes inspirado em plataformas de streaming.
+O projeto foi desenvolvido com foco no usuário final. Não existe uma interface administrativa, pois o CineFlix não realiza cadastro manual de filmes ou gerenciamento de usuários. Os filmes são obtidos de um catálogo local e também da API do The Movie Database (TMDB).
 
-Atualmente o aplicativo permite pesquisar filmes, consultar seus detalhes, adicionar filmes aos favoritos, armazenar histórico de pesquisas, salvar preferências do usuário e pesquisar cinemas próximos utilizando mapas e localização.
+Entre as principais funcionalidades da versão final estão:
 
-O projeto foi sendo atualizado de forma incremental conforme os conteúdos estudados nos módulos da disciplina.
+- Pesquisa de filmes por título e gênero;
+- Pesquisa automática on-line no TMDB;
+- Catálogo local em JSON;
+- Tela inicial com filmes em destaque;
+- Tela de detalhes com pôster, ano, gênero, nota e sinopse;
+- Lista de favoritos em SQLite;
+- Histórico de pesquisas;
+- SharedPreferences;
+- Arquivos internos e externos;
+- Galeria com GridView e ImageSwitcher;
+- Menu de opções e menu de contexto;
+- Página de ajuda com WebView;
+- Compartilhamento por SMS e e-mail;
+- Recebimento de SMS com BroadcastReceiver;
+- Google Maps;
+- Localização atual e monitoramento de localização;
+- Geocodificação e geocodificação reversa;
+- Pesquisa de cinemas próximos;
+- Comunicação HTTP;
+- Processamento de dados JSON;
+- Versionamento com Git e GitHub.
 
-Entre os principais recursos já implementados estão:
+## Problema que o CineFlix procura resolver
 
-* Pesquisa de filmes por título e gênero;
-* Pesquisa de filmes pela internet usando a API do TMDB;
-* Catálogo local em JSON;
-* Tela de detalhes dos filmes;
-* Lista de favoritos;
-* Banco de dados SQLite;
-* Histórico de pesquisas;
-* SharedPreferences;
-* Arquivos internos e externos;
-* Múltiplas Activities;
-* Navegação com Intents;
-* Google Maps;
-* Localização atual do usuário;
-* Monitoramento de localização;
-* Geocodificação;
-* Geocodificação reversa;
-* Pesquisa de endereços;
-* Pesquisa de cinemas próximos;
-* Comunicação HTTP;
-* Processamento de dados JSON.
+Existem muitas fontes diferentes para pesquisar filmes, consultar informações, organizar favoritos e localizar cinemas. A ideia do CineFlix é reunir parte dessas tarefas em uma única experiência simples.
 
----
+O usuário pode pesquisar um filme e encontrar informações básicas sem precisar navegar por diferentes páginas. Também pode manter seus favoritos salvos, compartilhar uma recomendação com outra pessoa e utilizar sua localização para procurar cinemas próximos.
 
-# Pesquisa de filmes
+Durante o desenvolvimento, procurei integrar cada novo recurso ao objetivo do aplicativo. Por isso, o mapa foi utilizado para localizar cinemas, o SMS e o e-mail foram utilizados para compartilhar recomendações e o WebView foi utilizado para criar uma área de ajuda do próprio CineFlix.
 
-O CineFlix possui uma pesquisa local e também uma pesquisa on-line.
+## Plataforma e tecnologias principais
 
-Enquanto o usuário digita no campo de pesquisa, o aplicativo procura resultados no catálogo local. A pesquisa on-line é realizada quando o usuário confirma a busca pelo teclado.
+A plataforma escolhida foi Android. A versão atual foi desenvolvida no Android Studio utilizando Kotlin e layouts em XML.
 
-A comunicação com o TMDB é feita pela classe:
+O projeto também utiliza recursos como RecyclerView, GridView, ImageSwitcher, WebView, SharedPreferences, SQLite, Intents, BroadcastReceiver, SmsManager, Google Maps, serviços de localização e comunicação HTTP.
 
-```text
-TmdbRepository
-```
+## Estrutura geral de navegação
 
-A consulta é executada em uma thread separada para evitar que a interface fique travada durante a comunicação com a internet.
-
-Os resultados são apresentados em um `RecyclerView`.
-
----
-
-## Pesquisa por título e gênero
-
-A pesquisa local permite procurar filmes pelo título ou pelo gênero.
-
-O texto também passa por uma normalização antes da comparação. Dessa forma, pesquisas com ou sem acentos podem apresentar o mesmo resultado.
-
-Exemplo:
+O fluxo principal do aplicativo pode ser representado de forma simplificada assim:
 
 ```text
-Ação
-acao
-AÇÃO
-Acao
+Tela inicial
+   |
+   |-- Pesquisa de filmes
+   |       |
+   |       --> Detalhes do filme
+   |                |
+   |                |-- Favoritar
+   |                |-- Recomendações
+   |                --> Compartilhar filme
+   |
+   |-- Galeria de filmes
+   |
+   |-- Favoritos
+   |
+   |-- Cinemas próximos / mapa
+   |
+   |-- Sobre / Ajuda
+   |
+   --> Configurações
 ```
 
-Trecho utilizado para normalização:
+# Evolução do projeto por módulo
 
-```kotlin
-private fun normalizarTexto(texto: String): String {
-    return Normalizer.normalize(
-        texto,
-        Normalizer.Form.NFD
-    )
-        .replace("\\p{M}+".toRegex(), "")
-        .lowercase(Locale.ROOT)
-        .trim()
-}
-```
+## Módulo 1: Dando vida ao CineFlix
 
----
+No primeiro módulo foi definida a ideia que daria origem ao CineFlix. A proposta foi criar um aplicativo relacionado a filmes, inspirado na experiência de plataformas de streaming, mas com foco acadêmico e sem a intenção de reproduzir uma plataforma comercial.
 
-## Pesquisa on-line no TMDB
+O problema escolhido foi a necessidade de consultar informações sobre filmes de forma simples e concentrada em um único aplicativo. A partir disso, foram definidos os dados que deveriam aparecer para o usuário, como título, ano, gênero, avaliação, sinopse e pôster.
 
-Quando o usuário confirma uma pesquisa, o aplicativo consulta a API do The Movie Database.
+A plataforma escolhida foi Android. Nesse momento inicial também foi definida a ideia de uma interface voltada ao usuário final, sem necessidade de uma área administrativa.
 
-A operação é executada fora da thread principal.
+O design inicial foi pensado com uma tela principal de pesquisa e uma área de resultado para apresentar as informações do filme encontrado. Esse esquema serviu como base para as versões seguintes.
 
-Caso a consulta seja concluída, os resultados recebidos são apresentados no aplicativo.
+As primeiras funcionalidades planejadas foram a pesquisa de filmes, apresentação das informações principais e navegação simples entre as telas.
 
-Também existe uma verificação para impedir que uma resposta antiga substitua uma pesquisa mais recente.
+## Módulo 2: Refinando a proposta e a experiência do usuário
 
-```kotlin
-val textoAtual = binding.editSearch.text
-    .toString()
-    .trim()
+No segundo módulo a ideia principal do CineFlix foi mantida, mas a organização do projeto foi refinada.
 
-if (textoAtual != termo) {
-    return@runOnUiThread
-}
-```
+A descrição do aplicativo, o problema que ele pretendia resolver e a escolha da plataforma continuaram os mesmos. O principal avanço dessa fase foi pensar melhor na organização da interface e na experiência do usuário.
 
-Caso a Activity já tenha sido encerrada, a interface também não é atualizada:
+A pesquisa continuou sendo o centro da aplicação, mas o projeto começou a considerar uma navegação mais organizada entre tela inicial, resultados e detalhes do filme. Também foi reforçada a decisão de manter o aplicativo voltado apenas ao usuário final.
 
-```kotlin
-if (isFinishing || isDestroyed) {
-    return@runOnUiThread
-}
-```
+Essa etapa foi importante para amadurecer a estrutura antes da implementação de recursos mais específicos dos módulos seguintes.
 
----
+## Módulo 3: Estruturando a interface e a entrada de dados
 
-## Funcionamento em caso de erro na internet
+Os conceitos do Módulo 3 foram incorporados à versão atual do CineFlix no Android Studio.
 
-Se ocorrer algum erro durante a consulta ao TMDB, o problema é registrado no Logcat.
+As interfaces passaram a ser estruturadas em XML. A tela principal possui um `EditText` para entrada do termo pesquisado e o código Kotlin recupera o valor digitado para filtrar os filmes e iniciar pesquisas.
 
-```kotlin
-Log.e(
-    "CineFlixTMDB",
-    "Erro ao consultar o TMDB",
-    e
-)
-```
+Também foram implementados eventos de clique em diferentes pontos do aplicativo, como seleção de filmes, botões de navegação e atalhos da tela inicial.
 
-Nesse caso, o aplicativo tenta continuar utilizando o catálogo local.
+A tela de detalhes utiliza `NestedScrollView`, permitindo que sinopse, botões e recomendações possam ser visualizados mesmo quando o conteúdo ultrapassa a altura da tela.
 
-Isso permite que parte da pesquisa continue disponível mesmo quando a consulta on-line não funciona.
+Na versão atual, a pesquisa também foi aprimorada. Enquanto o usuário digita, o CineFlix procura imediatamente no catálogo local. Depois de uma pequena pausa na digitação, uma pesquisa on-line é executada automaticamente no TMDB. O usuário ainda pode confirmar a busca manualmente pelo teclado caso queira realizar a consulta imediatamente.
 
----
+Com isso, os principais conceitos do módulo ficaram representados através de XML, EditText, recuperação de dados digitados, eventos de interação e conteúdo com rolagem.
 
-# Catálogo local
+## Módulo 4: Tornando o aplicativo mais visual e interativo
 
-O aplicativo também possui um catálogo armazenado no arquivo:
+O Módulo 4 foi responsável por ampliar os componentes visuais e as formas de interação do CineFlix.
+
+O `ImageView` é utilizado para exibir pôsteres na tela inicial, nos resultados, na tela de detalhes e em outras partes do aplicativo.
+
+Também foi criada a `GaleriaActivity`. Nessa tela, os filmes são apresentados em um `GridView`, formando uma galeria visual. Ao selecionar um filme, o pôster pode ser exibido em um `ImageSwitcher` e o usuário consegue navegar entre as imagens pelos botões Anterior e Próximo, com transições simples.
+
+O menu de contexto foi incorporado à galeria. Ao pressionar e segurar um filme, o usuário pode acessar ações relacionadas ao item selecionado, como abrir os detalhes ou adicionar e remover o filme dos favoritos.
+
+O CineFlix também possui um menu de opções global na tela principal. Esse menu permite acessar Favoritos, Galeria de filmes, Cinemas próximos, Sobre/Ajuda e Configurações.
+
+Para evitar repetição de código foi criada a classe `HelperMethods`. Ela centraliza métodos reutilizáveis, como normalização de textos para pesquisa e conversão de valores de dp para pixels.
+
+Outro recurso implementado foi o `WebView`. Foi criada a `AjudaActivity`, que carrega o arquivo local `assets/ajuda.html` dentro do próprio aplicativo. Essa página explica o objetivo do CineFlix e suas principais funcionalidades sem abrir um navegador externo.
+
+Durante essa etapa também foi realizada uma melhoria visual na tela inicial. O nome CineFlix passou a receber maior destaque, com identidade visual própria, e a Home passou a apresentar quatro filmes em destaque em uma grade 2 x 2, reduzindo o espaço vazio que existia na versão anterior.
+
+## Módulo 5: Persistência de dados e armazenamento
+
+O Módulo 5 representou uma das maiores evoluções do projeto. Foi nessa fase que o CineFlix foi recriado no Android Studio em Kotlin e passou a utilizar recursos mais completos de persistência.
+
+O aplicativo utiliza `SharedPreferences` através da classe `PreferencesManager`. Um exemplo é a última pesquisa realizada pelo usuário, que permanece salva e pode ser reaproveitada posteriormente.
+
+O histórico de pesquisas é gerenciado pela classe `HistoricoManager`, utilizando armazenamento interno. As pesquisas confirmadas podem ser gravadas em arquivo e recuperadas posteriormente.
+
+O aplicativo também trabalha com armazenamento externo através da exportação de favoritos para um arquivo CSV. O arquivo pode conter título, gênero, ano, nota e sinopse dos filmes armazenados.
+
+O catálogo local está localizado em:
 
 ```text
 app/src/main/res/raw/movies.json
 ```
 
-A leitura é realizada através de:
+A classe `MovieRepository` acessa esse recurso através de `openRawResource()` e transforma o conteúdo JSON em objetos utilizados pelo aplicativo.
 
-```kotlin
-resources.openRawResource(R.raw.movies)
-```
-
-A classe `MovieRepository` é responsável por carregar os dados e transformá-los em objetos utilizados pelo aplicativo.
-
----
-
-# Detalhes do filme
-
-Ao selecionar um filme, o usuário é direcionado para a `DetalhesActivity`.
-
-A `MainActivity` envia o ID do filme através de uma `Intent`.
-
-```kotlin
-val intent = Intent(
-    this,
-    DetalhesActivity::class.java
-)
-
-intent.putExtra("movie_id", filme.id)
-
-startActivity(intent)
-```
-
-A tela de detalhes utiliza esse identificador para localizar e apresentar as informações do filme escolhido.
-
----
-
-# Filmes favoritos
-
-Os filmes favoritos são armazenados em um banco de dados SQLite.
-
-A classe responsável é:
-
-```text
-DatabaseHelper
-```
-
-Ela utiliza:
-
-```kotlin
-SQLiteOpenHelper
-```
-
-O banco criado pelo aplicativo é:
+Os favoritos são persistidos em SQLite. A classe `DatabaseHelper` estende `SQLiteOpenHelper` e é responsável pelo banco:
 
 ```text
 cineflix.db
 ```
 
-A tabela principal é:
+A tabela de favoritos armazena informações como ID, título, gênero, ano, nota, sinopse e URL do pôster.
 
-```text
-favoritos
-```
+Essa estrutura permite que os filmes favoritos permaneçam disponíveis mesmo depois que o aplicativo é fechado.
 
-Entre as informações armazenadas estão:
+O Módulo 5 também consolidou o uso de múltiplas Activities e Intents para navegar entre diferentes partes do CineFlix e compartilhar informações, como o ID do filme selecionado.
 
-* ID;
-* Título;
-* Gênero;
-* Ano;
-* Nota;
-* Sinopse;
-* URL do pôster.
+## Módulo 6: Comunicação por SMS e e-mail
 
-A tela responsável por exibir os favoritos é a:
+No Módulo 6 foram adicionados recursos de comunicação. Para que essas funcionalidades fizessem sentido dentro do CineFlix, foi criada uma área de compartilhamento de recomendações de filmes.
 
-```text
-FavoritosActivity
-```
-
-Os filmes permanecem salvos mesmo depois que o aplicativo é fechado.
-
----
-
-# Histórico de pesquisas
-
-As pesquisas realizadas são registradas em um arquivo interno.
-
-A classe responsável por esse recurso é:
-
-```text
-HistoricoManager
-```
-
-Exemplo:
-
-```kotlin
-HistoricoManager.salvar(
-    this,
-    termo
-)
-```
-
-Esse recurso permite manter um histórico das pesquisas realizadas pelo usuário.
-
----
-
-# SharedPreferences
-
-O CineFlix utiliza `SharedPreferences` para armazenar informações simples.
-
-A classe responsável é:
-
-```text
-PreferencesManager
-```
-
-Entre os dados armazenados está a última pesquisa digitada.
-
-Exemplo de salvamento:
-
-```kotlin
-PreferencesManager.setUltimaPesquisa(
-    this@MainActivity,
-    termo
-)
-```
-
-Exemplo de recuperação:
-
-```kotlin
-val ultimaPesquisa =
-    PreferencesManager.getUltimaPesquisa(this)
-```
-
-As mesmas preferências podem ser acessadas por diferentes Activities.
-
----
-
-# Exportação de dados
-
-Os filmes favoritos podem ser exportados para um arquivo CSV.
+Na `DetalhesActivity`, o usuário pode escolher a opção Compartilhar filme. O aplicativo abre a `ComunicacaoActivity` e prepara automaticamente uma mensagem utilizando informações do filme selecionado.
 
 Exemplo:
 
 ```text
-favoritos_cineflix.csv
+Recomendação do CineFlix: Nexus Zero (2023) • Nota: 8.4. Vale a pena conferir!
 ```
 
-O arquivo pode conter informações como:
+### Envio direto de SMS
 
-* Título;
-* Gêneros;
-* Ano;
-* Nota;
-* Sinopse.
+O CineFlix utiliza `SmsManager` para realizar o envio direto de uma mensagem SMS. Como essa operação utiliza uma permissão sensível do Android, a permissão `SEND_SMS` é solicitada ao usuário quando o recurso é utilizado.
 
----
+### SMS através do aplicativo de mensagens
 
-# Navegação entre telas
+Também foi implementado o envio através do aplicativo de mensagens instalado no dispositivo. Nesse caso é utilizada uma `Intent`, que abre o aplicativo de SMS com o número e a mensagem preparados para o usuário.
 
-O projeto utiliza várias Activities.
+### Recebimento de SMS
 
-## MainActivity
+Para o recebimento de mensagens foi criado o `SmsReceiver`, que estende `BroadcastReceiver`.
 
-Tela principal do aplicativo.
+Quando um SMS chega ao dispositivo e a permissão `RECEIVE_SMS` foi autorizada, o receiver recupera o remetente e o conteúdo da mensagem. O `SmsRecebidoManager` armazena o último SMS recebido e a `ComunicacaoActivity` apresenta essas informações na tela.
 
-Responsável pela pesquisa de filmes, catálogo local, comunicação com o TMDB e acesso ao menu principal.
+Durante os testes no Android Emulator foi possível simular o recebimento de SMS e confirmar a exibição do número do remetente, data, horário e conteúdo da mensagem.
 
-## DetalhesActivity
+### Envio de e-mail
 
-Apresenta os dados completos do filme selecionado.
+Também foi criada uma opção para compartilhar a recomendação por e-mail. O usuário informa o endereço do destinatário e o CineFlix abre um aplicativo de e-mail compatível por meio de uma `Intent`, preenchendo assunto e mensagem automaticamente.
 
-## FavoritosActivity
+Dessa forma, os quatro requisitos de comunicação do módulo ficaram integrados ao objetivo principal do aplicativo.
 
-Apresenta os filmes armazenados no banco SQLite.
+## Módulo 7: Mapas, geolocalização e serviços web
 
-## ConfiguracoesActivity
+No Módulo 7 o CineFlix passou a trabalhar com localização geográfica real, mapas e serviços externos.
 
-Tela utilizada para as configurações e preferências do aplicativo.
+Foi criada a `CinemasActivity`, responsável pela integração com o Google Maps SDK for Android.
 
-## CinemasActivity
+A localização do usuário é obtida através do `FusedLocationProviderClient`. O aplicativo trabalha com as permissões `ACCESS_COARSE_LOCATION` e `ACCESS_FINE_LOCATION` e, quando autorizado, pode mostrar a localização atual no mapa.
 
-Tela adicionada no Módulo 7.
-
-É responsável pelos recursos de:
-
-* Google Maps;
-* Localização;
-* Geocodificação;
-* Geocodificação reversa;
-* Marcadores;
-* Pesquisa de endereços;
-* Monitoramento de localização;
-* Pesquisa de cinemas próximos.
-
----
-
-# Menu principal
-
-O menu da `MainActivity` está localizado em:
+Para obter e acompanhar a posição são utilizados recursos como:
 
 ```text
-app/src/main/res/menu/menu_main.xml
-```
-
-Atualmente ele possui opções para:
-
-* Favoritos;
-* Cinemas próximos;
-* Configurações.
-
-A navegação entre as telas é realizada utilizando `Intent`.
-
----
-
-# Módulo 7 - Mapas e geolocalização
-
-No Módulo 7 foram adicionados recursos relacionados a mapas, localização e comunicação com serviços web.
-
-A principal funcionalidade criada foi a tela:
-
-```text
-Cinemas próximos
-```
-
-Ela pode ser acessada pelo menu principal do CineFlix.
-
----
-
-## Google Maps
-
-O mapa é exibido utilizando o Google Maps SDK for Android.
-
-O layout utiliza um:
-
-```text
-SupportMapFragment
-```
-
-A Activity implementa:
-
-```text
-OnMapReadyCallback
-```
-
-O mapa é iniciado através de:
-
-```kotlin
-mapFragment.getMapAsync(this)
-```
-
----
-
-## Localização atual
-
-A localização do usuário é obtida utilizando:
-
-```text
-FusedLocationProviderClient
-```
-
-O aplicativo solicita as permissões:
-
-```text
-ACCESS_COARSE_LOCATION
-ACCESS_FINE_LOCATION
-```
-
-Quando a permissão é concedida, o mapa mostra o ponto azul indicando a posição atual do usuário.
-
-A posição também é utilizada para centralizar o mapa.
-
----
-
-## Obtenção da localização
-
-Para obter uma posição atual, o aplicativo utiliza:
-
-```kotlin
 getCurrentLocation()
-```
-
-com:
-
-```kotlin
-Priority.PRIORITY_HIGH_ACCURACY
-```
-
-Também é utilizado:
-
-```kotlin
 lastLocation
-```
-
-quando existe uma posição anterior disponível.
-
----
-
-## Monitoramento da localização
-
-Enquanto a tela de cinemas está aberta, o CineFlix pode acompanhar alterações na posição.
-
-Para isso são utilizados:
-
-```text
 LocationRequest
 LocationCallback
 LocationResult
 ```
 
-As atualizações são iniciadas com:
+Enquanto a tela de cinemas está ativa, o CineFlix pode receber atualizações de posição. Quando a Activity deixa de ficar ativa, o monitoramento é interrompido para evitar solicitações desnecessárias.
 
-```kotlin
-requestLocationUpdates()
-```
+### Interação com o mapa
 
-e interrompidas quando a tela deixa de ficar ativa:
+O usuário pode tocar diretamente em uma região do mapa. O aplicativo captura latitude e longitude, adiciona um marcador, movimenta a câmera e tenta encontrar o endereço correspondente.
 
-```kotlin
-removeLocationUpdates()
-```
+### Geocodificação
 
-Dessa forma, o aplicativo não continua solicitando localização sem necessidade quando o usuário sai da tela.
-
----
-
-## Latitude e longitude
-
-A posição atual também é exibida na tela.
-
-Exemplo:
-
-```text
-Sua localização: -19.91670, -43.93450
-```
-
-Durante o desenvolvimento, a localização do Android Emulator foi simulada através do ADB.
-
-Exemplo:
-
-```powershell
-& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" emu geo fix -43.9345 -19.9167
-```
-
-Nesse comando a longitude é informada antes da latitude.
-
----
-
-# Interação com o mapa
-
-O usuário pode tocar em um ponto do mapa para selecionar um local.
-
-O recurso utiliza:
-
-```kotlin
-googleMap.setOnMapClickListener
-```
-
-Quando o usuário toca no mapa:
-
-1. As coordenadas são capturadas;
-2. Um marcador é criado;
-3. O mapa é movimentado até o ponto;
-4. O endereço correspondente é pesquisado;
-5. O resultado aparece na tela.
-
----
-
-# Geocodificação reversa
-
-A geocodificação reversa transforma coordenadas em um endereço.
-
-O fluxo utilizado é:
-
-```text
-Latitude e longitude
-        ↓
-Geocoder
-        ↓
-Endereço
-```
-
-Quando o usuário toca no mapa, o CineFlix tenta identificar o endereço correspondente.
-
-O resultado é apresentado na tela e também pode ser mostrado no marcador.
-
----
-
-# Pesquisa de endereço
-
-Também foi implementado o processo inverso.
-
-O usuário pode digitar um local como:
+O campo de endereço permite que o usuário digite um local, por exemplo:
 
 ```text
 Praça Sete, Belo Horizonte
 ```
 
-ou:
+O `Geocoder` transforma o texto informado em coordenadas e movimenta o mapa até a região encontrada.
 
-```text
-Mineirão, Belo Horizonte
-```
+### Geocodificação reversa
 
-O `Geocoder` tenta transformar o texto informado em latitude e longitude.
+Também foi implementado o processo inverso. Ao selecionar um ponto no mapa, o CineFlix utiliza as coordenadas para tentar descobrir o endereço correspondente.
 
-Depois disso, o CineFlix:
+### Pesquisa de cinemas próximos
 
-* Move o mapa;
-* Cria um marcador;
-* Mostra o endereço;
-* Mostra as coordenadas.
+A funcionalidade principal do mapa é a pesquisa de cinemas próximos.
 
----
-
-# Controle do teclado
-
-Durante a pesquisa de endereços, o teclado virtual é fechado automaticamente depois que a busca é iniciada.
-
-Isso foi feito para evitar que o teclado ocupasse grande parte da tela e escondesse o mapa.
-
-Foram utilizados:
-
-```text
-WindowCompat
-WindowInsetsCompat
-```
-
----
-
-# Pesquisa de cinemas próximos
-
-A tela possui um botão:
-
-```text
-Buscar cinemas próximos
-```
-
-A pesquisa utiliza como referência a localização atual do usuário.
-
-Atualmente a consulta procura cinemas em um raio de aproximadamente:
-
-```text
-5 km
-```
-
----
-
-# OpenStreetMap e Overpass API
-
-Os cinemas são obtidos através dos dados do OpenStreetMap utilizando a Overpass API.
-
-A consulta procura locais classificados como:
+A classe `CinemaRepository` consulta dados do OpenStreetMap através da Overpass API. A requisição procura locais classificados como:
 
 ```text
 amenity=cinema
 ```
 
-São considerados elementos dos tipos:
+São considerados elementos dos tipos `node`, `way` e `relation`.
+
+A comunicação é realizada através de `HttpURLConnection` e a resposta é processada em JSON com `JSONObject` e `JSONArray`.
+
+Cada resultado é convertido em um objeto `CinemaMapa`, que contém informações como nome, latitude, longitude, endereço e distância aproximada.
+
+A distância entre o usuário e cada cinema é calculada com `Location.distanceBetween()`. Os resultados são ordenados do cinema mais próximo para o mais distante e apresentados como marcadores no mapa.
+
+Essa implementação permitiu utilizar Google Maps, localização, geocodificação, HTTP e JSON em uma funcionalidade realmente relacionada ao tema do projeto.
+
+## Módulo 8: Consolidação e documentação final
+
+O Módulo 8 representa a consolidação de todo o trabalho desenvolvido durante o período letivo.
+
+Nesta etapa o projeto foi revisado como um todo para verificar se os requisitos trabalhados durante os módulos estavam presentes na versão final do CineFlix.
+
+Também foi realizada uma reorganização da documentação para explicar não apenas quais recursos existem, mas como o aplicativo evoluiu e por que cada funcionalidade foi incorporada.
+
+O README passou a reunir a descrição do projeto, declaração do problema, plataforma, interface, funcionalidades, design, estrutura das telas e evolução dos oito módulos.
+
+Além disso, o código permanece versionado no GitHub, permitindo acompanhar as alterações realizadas durante o desenvolvimento.
+
+# Principais telas do aplicativo
+
+## Tela inicial
+
+A `MainActivity` é a tela principal do CineFlix.
+
+Ela apresenta a identidade visual do aplicativo, campo de pesquisa, última pesquisa realizada, atalhos para recursos importantes e quatro filmes em destaque.
+
+O `RecyclerView` utiliza um `GridLayoutManager` com duas colunas para organizar os destaques.
+
+A pesquisa local acontece enquanto o usuário digita. Depois de aproximadamente 600 milissegundos sem novas alterações no texto, o CineFlix pode realizar automaticamente uma pesquisa on-line no TMDB.
+
+Esse pequeno atraso evita realizar uma requisição para cada letra digitada.
+
+Também existe uma proteção para impedir que uma resposta antiga substitua uma pesquisa mais recente. Se o usuário mudar o termo antes que a resposta anterior chegue, o resultado antigo não é apresentado.
+
+## Tela de detalhes
+
+A `DetalhesActivity` apresenta as informações completas do filme escolhido:
 
 ```text
-node
-way
-relation
+Pôster
+Título
+Ano
+Gêneros
+Nota
+Sinopse
+Favoritos
+Recomendações
+Compartilhamento
 ```
 
-A classe responsável pela consulta é:
+O conteúdo utiliza `NestedScrollView` para se adaptar a telas menores ou sinopses maiores.
+
+## Favoritos
+
+A `FavoritosActivity` apresenta os filmes armazenados no banco SQLite.
+
+Os favoritos permanecem salvos mesmo depois que o aplicativo é encerrado.
+
+## Galeria de filmes
+
+A `GaleriaActivity` utiliza `GridView` para exibir o catálogo em formato de galeria.
+
+O `ImageSwitcher` permite alternar a imagem principal através dos botões Anterior e Próximo.
+
+Ao pressionar e segurar um filme, o menu de contexto oferece ações relacionadas ao item selecionado.
+
+## Compartilhar filme
+
+A `ComunicacaoActivity` reúne os recursos do Módulo 6.
+
+Ela permite enviar SMS diretamente, abrir o aplicativo de mensagens, abrir um aplicativo de e-mail, autorizar o recebimento de SMS e visualizar a última mensagem recebida.
+
+## Cinemas próximos
+
+A `CinemasActivity` reúne os recursos do Módulo 7.
+
+Ela possui Google Maps, localização atual, monitoramento, pesquisa de endereço, geocodificação, geocodificação reversa e pesquisa de cinemas próximos.
+
+## Sobre e Ajuda
+
+A `AjudaActivity` utiliza um `WebView` para carregar o arquivo local:
 
 ```text
-CinemaRepository
+app/src/main/assets/ajuda.html
 ```
 
----
+A página explica o objetivo do CineFlix e apresenta orientações sobre suas principais funcionalidades.
 
-# Comunicação HTTP
-
-A `CinemaRepository` realiza uma consulta HTTP à Overpass API.
-
-A conexão utiliza:
-
-```text
-HttpURLConnection
-```
-
-A operação é executada em uma thread separada.
-
-O fluxo simplificado é:
-
-```text
-Localização atual
-       ↓
-CinemaRepository
-       ↓
-Requisição HTTP
-       ↓
-Overpass API
-       ↓
-Resposta JSON
-       ↓
-CinemaMapa
-       ↓
-Marcadores no mapa
-```
-
----
-
-# Processamento do JSON
-
-A resposta da Overpass API é recebida em JSON.
-
-Para interpretar os dados são utilizados:
-
-```text
-JSONObject
-JSONArray
-```
-
-Cada cinema encontrado é convertido para um objeto do tipo:
-
-```text
-CinemaMapa
-```
-
----
-
-# Classe CinemaMapa
-
-A classe `CinemaMapa` representa um cinema encontrado na consulta.
-
-Ela possui informações como:
-
-* ID do OpenStreetMap;
-* Nome;
-* Latitude;
-* Longitude;
-* Endereço;
-* Distância aproximada.
-
----
-
-# Distância dos cinemas
-
-O aplicativo calcula uma distância aproximada entre a posição atual do usuário e cada cinema.
-
-O cálculo utiliza:
-
-```kotlin
-Location.distanceBetween()
-```
-
-O resultado é convertido de metros para quilômetros.
-
-Exemplo:
-
-```text
-Cinema Santa Tereza • 2,1 km
-```
-
-A distância apresentada é em linha reta e não representa uma rota por ruas.
-
----
-
-# Principais classes do projeto
+# Organização das principais classes
 
 ```text
 MainActivity.kt
 DetalhesActivity.kt
 FavoritosActivity.kt
 ConfiguracoesActivity.kt
+GaleriaActivity.kt
+AjudaActivity.kt
+ComunicacaoActivity.kt
 CinemasActivity.kt
+
 Movie.kt
 MovieAdapter.kt
+HomeMovieAdapter.kt
+GaleriaAdapter.kt
+RecomendadoAdapter.kt
+
 MovieRepository.kt
 TmdbRepository.kt
-CinemaMapa.kt
 CinemaRepository.kt
+CinemaMapa.kt
+
+DatabaseHelper.kt
 PreferencesManager.kt
 HistoricoManager.kt
-DatabaseHelper.kt
+HelperMethods.kt
+SmsRecebidoManager.kt
+SmsReceiver.kt
 ```
 
-### MainActivity
+A organização foi feita de forma que diferentes responsabilidades não ficassem concentradas em uma única Activity.
 
-Controla a tela principal e as pesquisas.
+`MainActivity` controla a tela inicial e a pesquisa.
 
-### DetalhesActivity
+`MovieRepository` gerencia o catálogo local e mantém os filmes obtidos on-line disponíveis para outras telas.
 
-Apresenta os dados do filme escolhido.
+`TmdbRepository` é responsável pela pesquisa de filmes no TMDB.
 
-### FavoritosActivity
+`DatabaseHelper` gerencia o banco SQLite.
 
-Apresenta os filmes armazenados no SQLite.
+`PreferencesManager` centraliza as preferências armazenadas em SharedPreferences.
 
-### ConfiguracoesActivity
+`HistoricoManager` gerencia o histórico salvo em arquivo interno.
 
-Gerencia as preferências do aplicativo.
+`CinemaRepository` realiza a pesquisa de cinemas através da Overpass API.
 
-### CinemasActivity
+`HelperMethods` reúne métodos reutilizáveis.
 
-Controla o Google Maps e os recursos de localização.
+`SmsReceiver` recebe o broadcast de mensagens SMS e `SmsRecebidoManager` mantém as informações da última mensagem recebida.
 
-### MovieRepository
+# Tecnologias e recursos utilizados
 
-Carrega os filmes locais e mantém informações de filmes encontrados on-line.
+O CineFlix utiliza atualmente:
 
-### TmdbRepository
+```text
+Android Studio
+Kotlin
+XML
+Android SDK
+View Binding
+RecyclerView
+GridLayoutManager
+GridView
+ImageView
+ImageSwitcher
+WebView
+NestedScrollView
+Intent
+BroadcastReceiver
+SmsManager
+SharedPreferences
+SQLite
+SQLiteOpenHelper
+JSON
+JSONObject
+JSONArray
+HTTP
+HttpURLConnection
+TMDB API
+Google Maps SDK for Android
+Google Play Services Location
+FusedLocationProviderClient
+LocationRequest
+LocationCallback
+Geocoder
+OpenStreetMap
+Overpass API
+Git
+GitHub
+```
 
-Responsável pela comunicação com o TMDB.
+# Persistência de dados
 
-### CinemaRepository
+O CineFlix utiliza diferentes formas de persistência de acordo com o tipo de informação.
 
-Responsável pela consulta de cinemas através da Overpass API.
+`SharedPreferences` é utilizado para dados simples, como a última pesquisa.
 
-### CinemaMapa
+Arquivos internos são utilizados pelo histórico de pesquisas.
 
-Representa os cinemas encontrados.
+O catálogo local fica em `res/raw/movies.json`.
 
-### PreferencesManager
+O SQLite é utilizado para armazenar os favoritos.
 
-Gerencia os dados salvos em `SharedPreferences`.
+Também existe a possibilidade de exportar os favoritos em formato CSV.
 
-### HistoricoManager
+# Serviços externos
 
-Gerencia o histórico em arquivo interno.
+## TMDB
 
-### DatabaseHelper
+A pesquisa de filmes pela internet utiliza a API do The Movie Database.
 
-Gerencia o banco SQLite.
+A classe responsável é:
 
----
+```text
+TmdbRepository
+```
 
-# Tecnologias utilizadas
+As requisições são executadas fora da thread principal para evitar travamentos da interface.
 
-O projeto utiliza atualmente:
+## OpenStreetMap e Overpass API
 
-* Android Studio;
-* Kotlin;
-* XML;
-* Android SDK;
-* View Binding;
-* RecyclerView;
-* Intent;
-* SharedPreferences;
-* SQLite;
-* SQLiteOpenHelper;
-* JSON;
-* JSONObject;
-* JSONArray;
-* HTTP;
-* HttpURLConnection;
-* TMDB API;
-* Google Maps SDK for Android;
-* Google Play Services Location;
-* FusedLocationProviderClient;
-* LocationRequest;
-* LocationCallback;
-* Geocoder;
-* OpenStreetMap;
-* Overpass API;
-* Threads;
-* Git;
-* GitHub.
+A pesquisa de cinemas utiliza dados do OpenStreetMap através da Overpass API.
 
----
+A classe responsável é:
+
+```text
+CinemaRepository
+```
+
+## Google Maps
+
+O mapa é exibido pelo Google Maps SDK for Android e a localização utiliza Google Play Services Location.
 
 # Configuração das chaves de API
 
-As chaves utilizadas no projeto não ficam diretamente no código-fonte.
+As chaves utilizadas pelo projeto não são gravadas diretamente no código-fonte publicado.
 
 Elas devem ser configuradas no arquivo:
 
@@ -826,95 +489,59 @@ TMDB_API_KEY=SUA_CHAVE_TMDB
 MAPS_API_KEY=SUA_CHAVE_GOOGLE_MAPS
 ```
 
+A chave do TMDB é disponibilizada através de `BuildConfig.TMDB_API_KEY`.
+
+A chave do Google Maps é enviada ao `AndroidManifest.xml` através de um `manifestPlaceholder`.
+
 O arquivo `local.properties` não deve ser publicado no GitHub.
 
----
+# Permissões utilizadas
 
-## TMDB
-
-A chave do TMDB é disponibilizada ao aplicativo através do:
-
-```kotlin
-BuildConfig.TMDB_API_KEY
-```
-
----
-
-## Google Maps
-
-A chave do Maps é enviada ao `AndroidManifest.xml` utilizando um `manifestPlaceholder`.
-
-No `build.gradle.kts`:
-
-```kotlin
-manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
-```
-
-No `AndroidManifest.xml`:
-
-```xml
-<meta-data
-    android:name="com.google.android.geo.API_KEY"
-    android:value="${MAPS_API_KEY}" />
-```
-
-No Google Cloud, a chave foi configurada com restrições para o aplicativo Android e para o Maps SDK for Android.
-
----
-
-# Estrutura resumida do projeto
+O projeto utiliza permissões de acordo com as funcionalidades implementadas:
 
 ```text
-CineFlix/
-├── app/
-│   ├── src/
-│   │   └── main/
-│   │       ├── java/
-│   │       │   └── com/example/cineflix/
-│   │       │       ├── MainActivity.kt
-│   │       │       ├── DetalhesActivity.kt
-│   │       │       ├── FavoritosActivity.kt
-│   │       │       ├── ConfiguracoesActivity.kt
-│   │       │       ├── CinemasActivity.kt
-│   │       │       ├── Movie.kt
-│   │       │       ├── MovieAdapter.kt
-│   │       │       ├── MovieRepository.kt
-│   │       │       ├── TmdbRepository.kt
-│   │       │       ├── CinemaMapa.kt
-│   │       │       ├── CinemaRepository.kt
-│   │       │       ├── PreferencesManager.kt
-│   │       │       ├── HistoricoManager.kt
-│   │       │       └── DatabaseHelper.kt
-│   │       ├── res/
-│   │       │   ├── drawable/
-│   │       │   ├── layout/
-│   │       │   ├── menu/
-│   │       │   ├── raw/
-│   │       │   │   └── movies.json
-│   │       │   ├── values/
-│   │       │   └── xml/
-│   │       └── AndroidManifest.xml
-│   └── build.gradle.kts
-├── gradle/
-├── .gitignore
-├── build.gradle.kts
-├── README.md
-└── settings.gradle.kts
+INTERNET
+ACCESS_NETWORK_STATE
+ACCESS_COARSE_LOCATION
+ACCESS_FINE_LOCATION
+SEND_SMS
+RECEIVE_SMS
+WRITE_EXTERNAL_STORAGE (compatibilidade com versões antigas do Android)
 ```
 
----
+As permissões sensíveis são solicitadas quando o usuário tenta utilizar o recurso correspondente.
+
+# Testes realizados durante o desenvolvimento
+
+Durante o desenvolvimento foram realizados testes no Android Emulator para verificar as principais funcionalidades do projeto.
+
+A localização do emulador foi simulada com ADB durante os testes do mapa.
+
+Exemplo:
+
+```powershell
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" emu geo fix -43.9345 -19.9167
+```
+
+O recebimento de SMS também foi validado no emulador através de um SMS simulado:
+
+```powershell
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" emu sms send 31999999999 "Teste de recebimento SMS do CineFlix"
+```
+
+O teste confirmou que o `SmsReceiver` conseguiu capturar o remetente e o conteúdo da mensagem e que os dados foram apresentados na tela de comunicação.
 
 # Como executar o projeto
 
 ## Requisitos
 
-* Android Studio instalado;
-* Android SDK configurado;
-* Emulador ou dispositivo Android;
-* Conexão com a internet;
-* Chave da API TMDB;
-* Chave do Google Maps;
-* Maps SDK for Android habilitado no Google Cloud.
+- Android Studio instalado;
+- Android SDK configurado;
+- Emulador ou dispositivo Android;
+- Conexão com a internet para recursos on-line;
+- Chave da API TMDB;
+- Chave do Google Maps;
+- Maps SDK for Android habilitado no Google Cloud.
 
 ## Passos
 
@@ -924,117 +551,39 @@ Clone o repositório:
 git clone https://github.com/AlexLearnsTech/CineFlix.git
 ```
 
-Abra o projeto no Android Studio.
+Abra o projeto no Android Studio e aguarde a sincronização do Gradle.
 
-Aguarde a sincronização do Gradle.
-
-Configure no `local.properties`:
+Configure as chaves no arquivo `local.properties`:
 
 ```properties
 TMDB_API_KEY=SUA_CHAVE_TMDB
 MAPS_API_KEY=SUA_CHAVE_GOOGLE_MAPS
 ```
 
-Depois selecione um emulador ou dispositivo e execute o aplicativo.
+Depois selecione um emulador ou dispositivo Android e execute o aplicativo.
 
-Na primeira vez que abrir a tela de cinemas, autorize o acesso à localização.
-
----
+Na primeira utilização de recursos como localização, envio direto de SMS ou recebimento de SMS, o Android poderá solicitar as permissões necessárias.
 
 # Capturas de tela
 
-As imagens do projeto podem ser armazenadas na pasta:
+As capturas de tela do projeto podem ser utilizadas para demonstrar visualmente a evolução e as principais funcionalidades do CineFlix.
+
+Entre as imagens mais úteis para a documentação estão:
 
 ```text
-docs/imagens
+Tela inicial
+Pesquisa de filmes
+Detalhes do filme
+Galeria
+Menu de contexto
+Favoritos
+Compartilhamento por SMS e e-mail
+Recebimento de SMS
+Sobre / Ajuda
+Mapa
+Geocodificação
+Cinemas próximos
 ```
-
-Exemplos:
-
-```text
-tela-inicial.png
-tela-pesquisa.png
-tela-detalhes.png
-tela-favoritos.png
-tela-configuracoes.png
-tela-mapa.png
-tela-geocodificacao.png
-tela-cinemas-proximos.png
-```
-
----
-
-# Melhorias implementadas no Módulo 5
-
-Entre as principais implementações realizadas no Módulo 5 estão:
-
-* Migração do projeto para o Android Studio;
-* Desenvolvimento em Kotlin;
-* Múltiplas Activities;
-* Navegação com Intents;
-* RecyclerView;
-* View Binding;
-* Catálogo em `res/raw`;
-* Pesquisa local;
-* Pesquisa on-line no TMDB;
-* Threads;
-* SharedPreferences;
-* Histórico em arquivo interno;
-* Armazenamento externo;
-* SQLite;
-* Favoritos;
-* Exportação CSV.
-
----
-
-# Melhorias implementadas no Módulo 7
-
-No Módulo 7 foram implementados:
-
-* Integração com Google Maps;
-* Criação da `CinemasActivity`;
-* Localização atual;
-* Exibição da posição no mapa;
-* Monitoramento de localização;
-* Latitude e longitude;
-* Interação com o mapa;
-* Marcadores;
-* Geocodificação;
-* Geocodificação reversa;
-* Pesquisa de endereços;
-* Controle do teclado virtual;
-* Consulta de cinemas próximos;
-* OpenStreetMap;
-* Overpass API;
-* Requisições HTTP;
-* Processamento de JSON;
-* Classe `CinemaMapa`;
-* Classe `CinemaRepository`;
-* Cálculo de distância aproximada dos cinemas.
-
----
-
-# Situação atual do projeto
-
-Depois das melhorias realizadas, o CineFlix passou a reunir diferentes conceitos estudados durante a disciplina.
-
-Atualmente o aplicativo trabalha com:
-
-* Persistência de dados;
-* Banco SQLite;
-* Arquivos internos e externos;
-* APIs externas;
-* JSON;
-* Comunicação HTTP;
-* Mapas;
-* Localização;
-* Geocodificação;
-* Monitoramento;
-* Serviços web.
-
-A funcionalidade de cinemas próximos também ajudou a integrar os recursos de mapa ao objetivo principal do aplicativo, em vez de utilizar o Google Maps apenas como uma demonstração isolada.
-
----
 
 # Repositório
 
@@ -1042,48 +591,39 @@ O projeto está disponível em:
 
 https://github.com/AlexLearnsTech/CineFlix
 
----
+O Git e o GitHub foram utilizados para versionar o código e manter o projeto atualizado durante o desenvolvimento.
 
-# Observação sobre o GitHub Classroom
+## Observação sobre o GitHub Classroom
 
-O enunciado da atividade orientava a publicação através do GitHub Classroom.
-
-Entretanto, não foi disponibilizado anteriormente um link específico para uma sala ou atividade. Por esse motivo, o projeto foi mantido em um repositório normal do GitHub, contendo o código e a documentação necessária para avaliação.
-
----
+O enunciado da disciplina menciona a utilização do GitHub Classroom. Como não foi disponibilizado anteriormente um link específico para uma atividade ou sala, o projeto foi mantido em um repositório normal do GitHub com o código e a documentação necessários para avaliação.
 
 # Possíveis melhorias futuras
 
-Algumas melhorias que ainda podem ser desenvolvidas futuramente são:
+Embora os objetivos acadêmicos do projeto tenham sido atendidos, ainda existem possibilidades de evolução, como autenticação de usuários, perfis, sincronização de favoritos em nuvem, trailers, paginação, recomendações personalizadas, rotas até cinemas, informações adicionais sobre estabelecimentos, testes automatizados e melhorias de acessibilidade.
 
-* Autenticação de usuários;
-* Perfis;
-* Sincronização dos favoritos em nuvem;
-* Trailers;
-* Recomendações personalizadas;
-* Paginação;
-* Rotas até os cinemas;
-* Informações adicionais sobre os cinemas;
-* Testes unitários;
-* Testes de interface;
-* Melhorias de acessibilidade;
-* Melhorias visuais;
-* Publicação do aplicativo.
+# Considerações finais
 
----
+O desenvolvimento do CineFlix permitiu acompanhar a evolução de um aplicativo desde sua ideia inicial até uma versão capaz de integrar vários recursos da plataforma Android.
+
+Ao longo dos módulos, o projeto deixou de ser apenas uma tela de pesquisa de filmes e passou a trabalhar com persistência, banco de dados, arquivos, serviços externos, comunicação, mapas e localização.
+
+Uma das principais preocupações durante o desenvolvimento foi evitar que os novos recursos parecessem funções isoladas adicionadas apenas para atender aos enunciados. Sempre que possível, procurei relacioná-los ao objetivo do aplicativo. A localização foi utilizada para encontrar cinemas, o SMS e o e-mail para compartilhar filmes, o WebView para apresentar ajuda e o SQLite para manter favoritos.
+
+Além dos requisitos da disciplina, também foram realizadas melhorias de usabilidade, como a nova identidade visual da tela inicial, os filmes em destaque e a pesquisa automática no TMDB.
+
+A versão final do CineFlix representa a integração prática dos principais conceitos trabalhados durante os oito módulos e mostra como diferentes recursos do Android podem funcionar juntos dentro de uma mesma aplicação.
 
 # Finalidade acadêmica
 
-O CineFlix foi desenvolvido para fins acadêmicos com o objetivo de aplicar os conteúdos estudados durante a disciplina de desenvolvimento Android.
+O CineFlix foi desenvolvido exclusivamente para fins acadêmicos.
 
 Os dados dos filmes pesquisados pela internet são fornecidos pela API do The Movie Database.
 
-Os dados utilizados para localizar cinemas são obtidos através do OpenStreetMap utilizando a Overpass API.
+Os dados utilizados na pesquisa de cinemas são obtidos através do OpenStreetMap e da Overpass API.
 
 O mapa é exibido através do Google Maps SDK for Android.
 
 O projeto não possui vínculo oficial com Netflix, TMDB, Google ou OpenStreetMap.
 
----
-
 Desenvolvido por Alex Magalhães Santos.
+

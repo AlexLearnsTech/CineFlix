@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission
+        android:name="android.permission.INTERNET" />
+
+    <uses-permission
+        android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- Envio direto de SMS -->
+    <uses-permission
+        android:name="android.permission.SEND_SMS" />
+
+    <!-- Recebimento de SMS -->
+    <uses-permission
+        android:name="android.permission.RECEIVE_SMS" />
+
+    <!--
+        Telefonia não é requisito obrigatório
+        para o restante do CineFlix.
+    -->
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
@@ -20,6 +46,7 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
@@ -27,36 +54,78 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+            <intent-filter>
+
+                <action
+                    android:name="android.intent.action.MAIN" />
+
+                <category
+                    android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
+
         </activity>
+
         <activity
             android:name=".DetalhesActivity"
             android:exported="false" />
+
         <activity
             android:name=".FavoritosActivity"
             android:exported="false" />
+
         <activity
             android:name=".ConfiguracoesActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".GaleriaActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AjudaActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ComunicacaoActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".CinemasActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!--
+            Receiver responsável por detectar
+            SMS recebidos pelo dispositivo.
+        -->
+        <receiver
+            android:name=".SmsReceiver"
+            android:enabled="true"
+            android:exported="true">
+
+            <intent-filter>
+
+                <action
+                    android:name="android.provider.Telephony.SMS_RECEIVED" />
+
+            </intent-filter>
+
+        </receiver>
 
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
+
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
+
         </provider>
 
-        <activity
-            android:name=".CinemasActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

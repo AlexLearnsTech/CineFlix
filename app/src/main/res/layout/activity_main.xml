@@ -1,36 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?android:attr/windowBackground">
+    android:background="?android:attr/windowBackground"
+    android:orientation="vertical">
 
+    <!--
+        Cabeçalho principal do CineFlix.
+        A Toolbar continua responsável pelo menu de opções,
+        porém agora possui uma identidade visual própria.
+    -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="68dp"
         android:background="@color/cineflix_red"
-        android:title="@string/app_name"
-        android:titleTextColor="@color/cineflix_white" />
+        android:elevation="6dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="7dp"
+                android:contentDescription="Logotipo do CineFlix"
+                android:src="@drawable/ic_cineflix_brand" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.03"
+                android:text="Cine"
+                android:textColor="@color/cineflix_white"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.03"
+                android:text="Flix"
+                android:textColor="#FFE082"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="14dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="14dp"
+        android:text="Encontre seu próximo filme"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="14dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="4dp"
+        android:text="Pesquise títulos, explore destaques ou encontre cinemas próximos."
+        android:textSize="12sp" />
 
     <EditText
         android:id="@+id/editSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:hint="@string/buscar_filme"
-        android:inputType="text"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="14dp"
+        android:background="@android:drawable/edit_text"
+        android:hint="Buscar filmes..."
         android:imeOptions="actionSearch"
-        android:padding="10dp"
-        android:background="@android:drawable/edit_text" />
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="11dp" />
+
+    <TextView
+        android:id="@+id/textUltimaPesquisa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="4dp"
+        android:text="Última pesquisa:"
+        android:textSize="11sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="12dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnHomeGaleria"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_weight="1"
+            android:text="Galeria"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/btnHomeFavoritos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_weight="1"
+            android:text="Favoritos"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/btnHomeCinemas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_weight="1"
+            android:text="Cinemas"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textSecao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="14dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="5dp"
+        android:text="Filmes em destaque"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textVazio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/nenhum_filme_encontrado"
         android:gravity="center"
-        android:padding="24dp"
+        android:padding="20dp"
+        android:text="@string/nenhum_filme_encontrado"
+        android:textSize="13sp"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -39,6 +171,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="false"
+        android:paddingStart="8dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="12dp" />
 
 </LinearLayout>

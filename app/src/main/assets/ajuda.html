@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CineFlix - Ajuda</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #111111;
+            color: #f5f5f5;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+        }
+
+        .cabecalho {
+            background-color: #f20d18;
+            padding: 24px 18px;
+            text-align: center;
+        }
+
+        .marca {
+            margin: 0;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .marca span {
+            color: #ffe082;
+        }
+
+        .subtitulo {
+            margin-top: 4px;
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        .conteudo {
+            padding: 18px;
+        }
+
+        .card {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 14px;
+            border-left: 4px solid #f20d18;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #ffe082;
+            font-size: 20px;
+        }
+
+        p {
+            margin-bottom: 8px;
+        }
+
+        ul {
+            padding-left: 22px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        .destaque {
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .rodape {
+            padding: 18px;
+            text-align: center;
+            color: #aaaaaa;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="cabecalho">
+    <h1 class="marca">🎬 Cine<span>Flix</span></h1>
+    <div class="subtitulo">
+        Filmes, favoritos e cinemas em um só aplicativo
+    </div>
+</div>
+
+<div class="conteudo">
+
+    <div class="card">
+        <h2>Sobre o CineFlix</h2>
+
+        <p>
+            O CineFlix é um aplicativo Android desenvolvido em Kotlin
+            como projeto acadêmico de desenvolvimento de aplicativos.
+        </p>
+
+        <p>
+            O objetivo é permitir que o usuário pesquise filmes,
+            consulte informações, salve favoritos e encontre cinemas
+            próximos utilizando recursos de localização.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Pesquisa de filmes</h2>
+
+        <p>
+            Digite o nome de um filme no campo de pesquisa da tela
+            inicial.
+        </p>
+
+        <p>
+            O CineFlix pesquisa inicialmente no catálogo local e,
+            após uma pequena pausa na digitação, realiza
+            automaticamente uma consulta on-line.
+        </p>
+
+        <p>
+            Você também pode utilizar o botão de pesquisa do teclado
+            para realizar a consulta imediatamente.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Detalhes e favoritos</h2>
+
+        <p>
+            Toque sobre um filme para visualizar informações como:
+        </p>
+
+        <ul>
+            <li>Título;</li>
+            <li>Ano;</li>
+            <li>Gêneros;</li>
+            <li>Nota;</li>
+            <li>Sinopse;</li>
+            <li>Pôster.</li>
+        </ul>
+
+        <p>
+            Na tela de detalhes também é possível adicionar ou remover
+            o filme da lista de favoritos.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Galeria de filmes</h2>
+
+        <p>
+            A Galeria permite visualizar os filmes em formato de grade
+            e navegar pelos pôsteres utilizando os botões
+            <span class="destaque">Anterior</span> e
+            <span class="destaque">Próximo</span>.
+        </p>
+
+        <p>
+            Pressione e segure um filme da grade para acessar ações
+            adicionais através do menu de contexto.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Cinemas próximos</h2>
+
+        <p>
+            A área de cinemas utiliza Google Maps e a localização do
+            dispositivo.
+        </p>
+
+        <p>
+            Nela é possível:
+        </p>
+
+        <ul>
+            <li>Visualizar a localização atual;</li>
+            <li>Pesquisar endereços;</li>
+            <li>Selecionar pontos no mapa;</li>
+            <li>Consultar o endereço de uma posição;</li>
+            <li>Encontrar cinemas próximos.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Recursos do aplicativo</h2>
+
+        <ul>
+            <li>Pesquisa de filmes;</li>
+            <li>TMDB;</li>
+            <li>Catálogo local em JSON;</li>
+            <li>SQLite;</li>
+            <li>SharedPreferences;</li>
+            <li>Arquivos internos e externos;</li>
+            <li>Favoritos;</li>
+            <li>Galeria;</li>
+            <li>Google Maps;</li>
+            <li>Geolocalização;</li>
+            <li>Geocodificação;</li>
+            <li>OpenStreetMap;</li>
+            <li>Overpass API;</li>
+            <li>WebView.</li>
+        </ul>
+    </div>
+
+</div>
+
+<div class="rodape">
+    CineFlix • Projeto acadêmico Android
+</div>
+
+</body>
+</html>

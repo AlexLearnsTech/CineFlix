@@ -1,18 +1,32 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_favoritos"
         android:title="@string/favoritos"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_galeria"
+        android:title="Galeria de filmes"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_cinemas"
         android:title="Cinemas próximos"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_ajuda"
+        android:title="Sobre / Ajuda"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_config"
         android:title="@string/configuracoes"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
 
 </menu>
