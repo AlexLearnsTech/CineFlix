@@ -1,3 +1,4 @@
+````
 # CineFlix
 
 O CineFlix é um aplicativo Android desenvolvido como projeto acadêmico da disciplina de desenvolvimento de aplicativos móveis. O projeto foi construído de forma incremental ao longo dos módulos da disciplina, começando com uma proposta simples de pesquisa de filmes e evoluindo até incorporar persistência de dados, banco SQLite, comunicação por SMS e e-mail, WebView, serviços web, mapas e geolocalização.
@@ -256,17 +257,23 @@ A distância entre o usuário e cada cinema é calculada com `Location.distanceB
 
 Essa implementação permitiu utilizar Google Maps, localização, geocodificação, HTTP e JSON em uma funcionalidade realmente relacionada ao tema do projeto.
 
-## Módulo 8: Consolidação e documentação final
+## Módulo 8: Serviços em segundo plano e integração com Google Play Services
 
-O Módulo 8 representa a consolidação de todo o trabalho desenvolvido durante o período letivo.
+No Módulo 8 o CineFlix passou a trabalhar de forma mais completa com serviços executados em segundo plano. A ideia foi criar uma funcionalidade que tivesse relação direta com o aplicativo e, ao mesmo tempo, permitisse aplicar os principais conceitos estudados no módulo.
 
-Nesta etapa o projeto foi revisado como um todo para verificar se os requisitos trabalhados durante os módulos estavam presentes na versão final do CineFlix.
+Foi criado o `CineFlixSyncService`, responsável por atualizar periodicamente os resultados da última pesquisa realizada pelo usuário. Quando a atualização em segundo plano é iniciada pela tela de Configurações, o serviço recupera o último termo salvo pelo `PreferencesManager`, consulta novamente a API do TMDB e registra os resultados recebidos no `MovieRepository`.
 
-Também foi realizada uma reorganização da documentação para explicar não apenas quais recursos existem, mas como o aplicativo evoluiu e por que cada funcionalidade foi incorporada.
+Como uma consulta pela internet pode levar algum tempo, o trabalho não é executado diretamente na thread principal. O serviço utiliza um `ScheduledExecutorService`, permitindo realizar a comunicação com o TMDB em uma thread separada e evitando travamentos na interface. Essa mesma estrutura também permite que a tarefa seja repetida em intervalos definidos enquanto o serviço estiver ativo.
 
-O README passou a reunir a descrição do projeto, declaração do problema, plataforma, interface, funcionalidades, design, estrutura das telas e evolução dos oito módulos.
+A comunicação entre a `ConfiguracoesActivity` e o serviço foi feita através de um `Bound Service` com `Binder`. Dessa forma, a Activity consegue se conectar ao `CineFlixSyncService`, consultar seu estado e receber informações sobre a execução. Na própria tela de Configurações o usuário pode visualizar se o serviço está ativo, qual pesquisa está sendo monitorada, o horário da última atualização e o resultado da sincronização, além de iniciar ou interromper o serviço.
 
-Além disso, o código permanece versionado no GitHub, permitindo acompanhar as alterações realizadas durante o desenvolvimento.
+Como a atualização pode continuar mesmo depois que o usuário sai da tela de Configurações, o serviço funciona em primeiro plano quando está ativo e apresenta uma notificação do CineFlix informando que a atualização está sendo executada. O `AndroidManifest.xml` também foi atualizado para registrar o serviço e as permissões necessárias para esse funcionamento nas versões atuais do Android.
+
+As informações simples da última sincronização, como horário, termo pesquisado e quantidade de resultados, são armazenadas com `SharedPreferences`. Com isso, a tela consegue apresentar o último resultado mesmo depois que o serviço já foi encerrado.
+
+A integração com os Serviços do Google Play também está presente no projeto através dos recursos implementados na etapa anterior. O CineFlix utiliza o Google Maps SDK for Android e o Google Play Services Location, incluindo o `FusedLocationProviderClient`, para trabalhar com o mapa e obter a localização do usuário na pesquisa de cinemas próximos.
+
+Com essas implementações, o Módulo 8 passou a reunir serviço em segundo plano, processamento assíncrono em thread separada, execução de tarefas repetitivas, comunicação entre Activity e Service e integração com os Serviços do Google Play. Dessa forma, a etapa final não ficou limitada apenas à documentação do projeto, mas acrescentou uma funcionalidade prática que se integra ao funcionamento do CineFlix.
 
 # Principais telas do aplicativo
 
@@ -627,3 +634,5 @@ O projeto não possui vínculo oficial com Netflix, TMDB, Google ou OpenStreetMa
 
 Desenvolvido por Alex Magalhães Santos.
 
+
+````

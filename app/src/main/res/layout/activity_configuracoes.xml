@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -22,11 +24,16 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Tema -->
+
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switchTemaEscuro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tema_escuro" />
+
+
+            <!-- Ordenação -->
 
             <TextView
                 android:layout_width="wrap_content"
@@ -58,7 +65,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/nota" />
+
             </RadioGroup>
+
+
+            <!-- Histórico -->
 
             <Button
                 android:id="@+id/buttonVerHistorico"
@@ -74,6 +85,63 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/limpar_historico" />
 
+
+            <!-- Módulo 8 -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/atualizacao_segundo_plano"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/descricao_atualizacao_segundo_plano"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textStatusSincronizacao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/status_inicial"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textTermoSincronizacao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/pesquisa_monitorada_inicial" />
+
+            <TextView
+                android:id="@+id/textUltimaSincronizacao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/ultima_atualizacao_inicial" />
+
+            <TextView
+                android:id="@+id/textResultadoSincronizacao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/resultado_sincronizacao_inicial" />
+
+            <Button
+                android:id="@+id/buttonControleSincronizacao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/iniciar_atualizacao" />
+
+
+            <!-- Versão -->
+
             <TextView
                 android:id="@+id/textVersao"
                 android:layout_width="match_parent"
@@ -83,5 +151,7 @@
                 android:textSize="12sp" />
 
         </LinearLayout>
+
     </LinearLayout>
+
 </ScrollView>

@@ -1,44 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
+
     <string name="app_name">CineFlix</string>
-    <string name="sem_historico">Nenhuma pesquisa realizada ainda</string>
-    <string name="historico_pesquisas">Histórico de pesquisas</string>
+
+    <string name="sem_historico">
+        Nenhuma pesquisa realizada ainda
+    </string>
+
+    <string name="historico_pesquisas">
+        Histórico de pesquisas
+    </string>
+
     <string name="ok">OK</string>
-    <string name="historico_limpo">Histórico limpo com sucesso</string>
-    <string name="versao_app">CineFlix • Versão %1$s</string>
 
-    <string name="nenhum_favorito_exportar">Adicione favoritos antes de exportar</string>
-    <string name="exportado_com_sucesso">Exportado para: %1$s</string>
-    <string name="erro_exportar">Erro ao exportar arquivo</string>
+    <string name="historico_limpo">
+        Histórico limpo com sucesso
+    </string>
 
-    <string name="adicionar_favoritos">Adicionar aos favoritos</string>
-    <string name="remover_favoritos">Remover dos favoritos</string>
+    <string name="versao_app">
+        CineFlix • Versão %1$s
+    </string>
 
-    <string name="info_detalhes">%1$s • %2$s • ⭐ %3$s</string>
+    <string name="nenhum_favorito_exportar">
+        Adicione favoritos antes de exportar
+    </string>
 
-    <string name="configuracoes">Configurações</string>
-    <string name="tema_escuro">Tema escuro</string>
-    <string name="ordenar_favoritos_por">Ordenar favoritos por</string>
+    <string name="exportado_com_sucesso">
+        Exportado para: %1$s
+    </string>
+
+    <string name="erro_exportar">
+        Erro ao exportar arquivo
+    </string>
+
+    <string name="adicionar_favoritos">
+        Adicionar aos favoritos
+    </string>
+
+    <string name="remover_favoritos">
+        Remover dos favoritos
+    </string>
+
+    <string name="info_detalhes">
+        %1$s • %2$s • ⭐ %3$s
+    </string>
+
+    <string name="configuracoes">
+        Configurações
+    </string>
+
+    <string name="tema_escuro">
+        Tema escuro
+    </string>
+
+    <string name="ordenar_favoritos_por">
+        Ordenar favoritos por
+    </string>
 
     <string name="nome">Nome</string>
+
     <string name="ano">Ano</string>
+
     <string name="nota">Nota</string>
 
-    <string name="ver_historico">Ver histórico</string>
-    <string name="limpar_historico">Limpar histórico</string>
+    <string name="ver_historico">
+        Ver histórico
+    </string>
 
-    <string name="poster_filme">Pôster do filme</string>
-    <string name="recomendados">Recomendados</string>
+    <string name="limpar_historico">
+        Limpar histórico
+    </string>
 
-    <string name="favoritos">Favoritos</string>
-    <string name="nenhum_favorito">Nenhum filme foi adicionado aos favoritos</string>
+    <string name="poster_filme">
+        Pôster do filme
+    </string>
 
-    <string name="exportar_lista">Exportar lista de favoritos</string>
-    <string name="buscar_filme">Buscar filme por título ou gênero</string>
-    <string name="nenhum_filme_encontrado">Nenhum filme encontrado</string>
+    <string name="recomendados">
+        Recomendados
+    </string>
 
-    <string name="buscando_filmes">Buscando filmes...</string>
-    <string name="erro_busca_tmdb">Não foi possível consultar o TMDB. Verifique sua conexão e tente novamente.</string>
-    <string name="api_tmdb_nao_configurada">A chave da API TMDB não foi configurada.</string>
-    <string name="toque_lupa_buscar">Toque na lupa para pesquisar</string>
+    <string name="favoritos">
+        Favoritos
+    </string>
+
+    <string name="nenhum_favorito">
+        Nenhum filme foi adicionado aos favoritos
+    </string>
+
+    <string name="exportar_lista">
+        Exportar lista de favoritos
+    </string>
+
+    <string name="buscar_filme">
+        Buscar filme por título ou gênero
+    </string>
+
+    <string name="nenhum_filme_encontrado">
+        Nenhum filme encontrado
+    </string>
+
+    <string name="buscando_filmes">
+        Buscando filmes...
+    </string>
+
+    <string name="erro_busca_tmdb">
+        Não foi possível consultar o TMDB. Verifique sua conexão e tente novamente.
+    </string>
+
+    <string name="api_tmdb_nao_configurada">
+        A chave da API TMDB não foi configurada.
+    </string>
+
+    <string name="toque_lupa_buscar">
+        Toque na lupa para pesquisar
+    </string>
+
+
+    <!-- ======================================= -->
+    <!-- Módulo 8 - Serviço em segundo plano -->
+    <!-- ======================================= -->
+
+    <string name="atualizacao_segundo_plano">
+        Atualização em segundo plano
+    </string>
+
+    <string name="descricao_atualizacao_segundo_plano">
+        Mantém atualizados os resultados da última pesquisa enquanto o serviço estiver ativo.
+    </string>
+
+    <string name="status_sincronizacao">
+        Status: %1$s
+    </string>
+
+    <string name="status_ativo">
+        Ativo
+    </string>
+
+    <string name="status_inativo">
+        Inativo
+    </string>
+
+    <string name="status_inicial">
+        Status: Inativo
+    </string>
+
+    <string name="pesquisa_monitorada">
+        Pesquisa monitorada: %1$s
+    </string>
+
+    <string name="pesquisa_monitorada_inicial">
+        Pesquisa monitorada: nenhuma
+    </string>
+
+    <string name="nenhuma_pesquisa">
+        Nenhuma pesquisa realizada
+    </string>
+
+    <string name="ultima_atualizacao">
+        Última atualização: %1$s
+    </string>
+
+    <string name="ultima_atualizacao_inicial">
+        Última atualização: nenhuma
+    </string>
+
+    <string name="nenhuma_atualizacao">
+        Nenhuma atualização realizada
+    </string>
+
+    <string name="resultado_sincronizacao">
+        Resultado: %1$s
+    </string>
+
+    <string name="resultado_sincronizacao_inicial">
+        Resultado: aguardando início do serviço
+    </string>
+
+    <string name="iniciar_atualizacao">
+        Iniciar atualização
+    </string>
+
+    <string name="parar_atualizacao">
+        Parar atualização
+    </string>
+
+    <string name="sync_sem_pesquisa">
+        Faça uma pesquisa de filme antes de iniciar a atualização em segundo plano.
+    </string>
+
+    <string name="sync_iniciando">
+        Iniciando serviço...
+    </string>
+
+    <string name="sync_atualizando">
+        Atualizando resultados...
+    </string>
+
+    <string name="sync_sucesso">
+        %1$d filme(s) atualizado(s) com sucesso.
+    </string>
+
+    <string name="sync_erro">
+        Não foi possível realizar a última atualização.
+    </string>
+
+    <string name="sync_api_nao_configurada">
+        A API do TMDB não está configurada.
+    </string>
+
+    <string name="sync_parado">
+        Serviço interrompido pelo usuário.
+    </string>
+
+    <string name="sync_aguardando_inicio">
+        Aguardando início do serviço.
+    </string>
+
+
+    <!-- Canal e notificação -->
+
+    <string name="canal_sync_nome">
+        Atualizações do CineFlix
+    </string>
+
+    <string name="canal_sync_descricao">
+        Informa quando o CineFlix está atualizando resultados em segundo plano.
+    </string>
+
+    <string name="notificacao_sync_titulo">
+        CineFlix • Atualização em segundo plano
+    </string>
+
+    <string name="notificacao_sync_preparando">
+        Preparando atualização...
+    </string>
+
+    <string name="notificacao_sync_termo">
+        Atualizando resultados para "%1$s"
+    </string>
+
+    <string name="notificacao_sync_sucesso">
+        %1$d resultado(s) atualizado(s) para "%2$s"
+    </string>
+
+    <string name="notificacao_sync_erro">
+        Não foi possível atualizar os resultados.
+    </string>
+
+    <string name="notificacao_sync_sem_pesquisa">
+        Aguardando uma pesquisa para atualizar.
+    </string>
 
 </resources>
